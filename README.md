@@ -1,20 +1,17 @@
 
-If you use the code, please cite our paper:
-
-
 ## Installation
 
 * Clone the repository and cd to it.
 
 ```bash
-git clone https://github.com/JakubSochor/BoxCars.git BoxCars
-cd BoxCars
+git clone https://github.com/AKITOSHI8186/HGRX_3DBB.git HGRX_3DBB
+cd HGRX_3DBB
 ```
 * (Optional, but recommended) Create virtual environment for this project - you can use **virtualenvwrapper** or following commands. **IMPORTANT NOTE:** this project is using **Python3**.
 
 ```bash
-virtuenv -p /usr/bin/python3 boxcars_venv
-source boxcars_venv/bin/activate
+virtuenv -p /usr/bin/python3 HGRX_3DBB_venv
+source HGRX_3DBB_venv/bin/activate
 ```
 
 * Install required packages:
@@ -25,11 +22,6 @@ pip3 install -r requirements.txt
 
 * Manually download dataset https://medusa.fit.vutbr.cz/traffic/data/BoxCars116k.zip and unzip it.
 * Modify `scripts/config.py` and change `BOXCARS_DATASET_ROOT` to directory where is the unzipped dataset.
-* (Optional) Download trained models using `scripts/download_models.py`. To download all models to default location (`./models`) run following command (or use -h for help):
-
-```base
-python3 scripts/download_models.py --all
-``` 
 
 
 ## Usage
@@ -45,7 +37,6 @@ The model is evaluated when the training is finished, however it is possible to 
 ```bash
 python3 scripts/train_eval.py --eval path-to-model.h5
 ```
-
 
 ## Trained models
 We provide numerical results of models distributed with this code (use `scripts/download_models.py`). 
