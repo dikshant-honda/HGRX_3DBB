@@ -20,7 +20,7 @@ source HGRX_3DBB_venv/bin/activate
 pip3 install -r requirements.txt 
 ```
 
-* Manually download dataset https://medusa.fit.vutbr.cz/traffic/data/BoxCars116k.zip and unzip it.
+* Manually download dataset https://drive.google.com/file/d/19LHLOmmVyUS1R4ypwByfrV8KQWnz2GDT/view and unzip it.
 * Modify `scripts/config.py` and change `BOXCARS_DATASET_ROOT` to directory where is the unzipped dataset.
 
 
