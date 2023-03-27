@@ -38,7 +38,7 @@ The model is evaluated when the training is finished, however it is possible to 
 python3 scripts/train_eval.py --eval path-to-model.h5
 ```
 
-## BoxCars116k dataset
+## dataset
 The dataset was created for the paper and it is possible to download it from our (https://drive.google.com/file/d/19LHLOmmVyUS1R4ypwByfrV8KQWnz2GDT/view)
 The dataset contains 116k of images of vehicles with fine-grained labels taken from surveillance cameras under various viewpoints. 
 The dataset contains tracked vehicles with the same label and multiple images per track. The track is uniquely identified by its id `vehicle_id`, while each image is uniquely identified by `vehicle_id` and `instance_id`. It is possible to use class `BoxCarsDataset` from `lib/boxcars_dataset.py` for working with the dataset; however, for convenience, we describe the structure of the dataset also here. 
