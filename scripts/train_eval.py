@@ -100,16 +100,17 @@ if args.eval is None:
     if args.resume is not None:
         initial_epoch = int(os.path.basename(args.resume).split("_")[1]) + 1
 
-
-    model.fit(
-                steps_per_epoch=generator_train.n,
-                epochs=args.epochs,
-                verbose=1,
-                validation_data=generator_val,
-                validation_steps=generator_val.n,
-                callbacks=[tb_callback, saver_callback],
-                initial_epoch = initial_epoch,
-            )
+    iterator = iter(generator_train)
+    for element in iterator:
+        model.fit(  element[0], element[1],
+                    steps_per_epoch=generator_train.n,
+                    epochs=args.epochs,
+                    verbose=1,
+                    validation_data=generator_val,
+                    validation_steps=generator_val.n,
+                    callbacks=[tb_callback, saver_callback],
+                    initial_epoch = initial_epoch,
+                )
 
     #%% save trained data
     print("Saving the final model to %s"%(args.output_final_model_path))
