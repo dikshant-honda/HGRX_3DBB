@@ -9,10 +9,10 @@ import os
 import time
 import sys
 
-from boxcars_dataset import BoxCarsDataset
-from boxcars_data_generator import BoxCarsDataGenerator
+from lib.boxcars_dataset import BoxCarsDataset
+from lib.boxcars_data_generator import BoxCarsDataGenerator
 
-from keras.applications.resnet50 import ResNet50
+from tensorflow.keras.applications.resnet50 import ResNet50
 from keras.applications.vgg16 import VGG16
 from keras.applications.vgg19 import VGG19
 from keras.applications.inception_v3 import InceptionV3
