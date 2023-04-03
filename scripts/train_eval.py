@@ -13,9 +13,9 @@ from lib.boxcars_dataset import BoxCarsDataset
 from lib.boxcars_data_generator import BoxCarsDataGenerator
 
 from tensorflow.keras.applications.resnet50 import ResNet50
-from keras.applications.vgg16 import VGG16
-from keras.applications.vgg19 import VGG19
-from keras.applications.inception_v3 import InceptionV3
+from tensorflow.keras.applications.vgg16 import VGG16
+from tensorflow.keras.applications.vgg19 import VGG19
+from tensorflow.keras.applications.inception_v3 import InceptionV3
 from keras.layers import Dense, Flatten, Dropout, AveragePooling2D
 from keras.models import Model, load_model
 from keras.optimizers import SGD
@@ -62,7 +62,7 @@ if model is None:
         x = Flatten()(x)
             
     predictions = Dense(dataset.get_number_of_classes(), activation='softmax')(x)
-    model = Model(input=base_model.input, output=predictions, name="%s%s"%(args.train_net, {True: "_estimated3DBB", False:""}[args.estimated_3DBB is not None]))
+    model = Model(base_model.input, predictions, name="%s%s"%(args.train_net, {True: "_estimated3DBB", False:""}[args.estimated_3DBB is not None]))
     optimizer = SGD(lr=args.lr, decay=1e-4, nesterov=True)
     model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=["accuracy"])
 
@@ -101,15 +101,15 @@ if args.eval is None:
         initial_epoch = int(os.path.basename(args.resume).split("_")[1]) + 1
 
 
-    model.fit_generator(generator=generator_train, 
-                        samples_per_epoch=generator_train.n,
-                        nb_epoch=args.epochs,
-                        verbose=1,
-                        validation_data=generator_val,
-                        nb_val_samples=generator_val.n,
-                        callbacks=[tb_callback, saver_callback],
-                        initial_epoch = initial_epoch,
-                        )
+    model.fit(
+                steps_per_epoch=generator_train.n,
+                epochs=args.epochs,
+                verbose=1,
+                validation_data=generator_val,
+                validation_steps=generator_val.n,
+                callbacks=[tb_callback, saver_callback],
+                initial_epoch = initial_epoch,
+            )
 
     #%% save trained data
     print("Saving the final model to %s"%(args.output_final_model_path))
