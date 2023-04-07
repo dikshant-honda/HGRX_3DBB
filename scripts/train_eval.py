@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import _init_paths
 # this should be soon to prevent tensorflow initialization with -h parameter
-from utils import ensure_dir, parse_args
+from lib.utils import ensure_dir, parse_args
 args = parse_args(["ResNet50", "VGG16", "VGG19", "InceptionV3"])
 
 # other imports
@@ -12,10 +12,10 @@ import sys
 from lib.boxcars_dataset import BoxCarsDataset
 from lib.boxcars_data_generator import BoxCarsDataGenerator
 
-from tensorflow.keras.applications.resnet50 import ResNet50
-from tensorflow.keras.applications.vgg16 import VGG16
-from tensorflow.keras.applications.vgg19 import VGG19
-from tensorflow.keras.applications.inception_v3 import InceptionV3
+# from keras.applications.resnet50 import ResNet50
+from keras.applications.vgg16 import VGG16
+from keras.applications.vgg19 import VGG19
+from keras.applications.inception_v3 import InceptionV3
 from keras.layers import Dense, Flatten, Dropout, AveragePooling2D
 from keras.models import Model, load_model
 from keras.optimizers import SGD
