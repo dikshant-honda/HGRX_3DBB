@@ -67,3 +67,30 @@ samples: list of vehicles (index correspons to vehicle id).
 * **json_data** and **matlab_data** - converted pkl file
 
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ## Installation
+
+* Clone the repository and cd to it.
+
+```bash
+git clone https://github.com/dikshant-honda/HGRX_3DBB.git
+cd HGRX_3DBB
+```
+* (RECOMMENDED) Create virtual environment for this project using anaconda (make sure anaconda is already installed)
+```bash
+conda create -n venv python=3.9
+conda activate venv
+```
+
+* Install required packages:
+
+```bash
+pip install tensorflow-gpu==2.10.0
+pip install opencv-python
+pip install pyparsing pyyaml theano
+```
+
+* Manually download dataset https://drive.google.com/file/d/19LHLOmmVyUS1R4ypwByfrV8KQWnz2GDT/view and unzip it.
+* Modify `scripts/config.py` and change `BOXCARS_DATASET_ROOT` to directory where is the unzipped dataset.
+
+
