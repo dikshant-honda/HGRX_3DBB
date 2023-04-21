@@ -146,3 +146,5 @@ wheel                        0.38.4
 wrapt                        1.15.0
 zipp                         3.15.0
 ```
+
+* CUDA env variables: CUDA_PATH_V11_2 OR CUDA_PATH_V8_0
