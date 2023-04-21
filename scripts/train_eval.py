@@ -8,9 +8,10 @@ args = parse_args(["ResNet50", "VGG16", "VGG19", "InceptionV3"])
 import os
 import time
 import sys
+import tensorflow as tf
 
 from boxcars_dataset import BoxCarsDataset
-from boxcars_data_generator import BoxCarsDataGenerator
+from boxcars_data_generator import BoxCarsDataGenerator, BoxCarsDataPreprocessing
 
 from tensorflow.keras.applications.resnet50 import ResNet50
 from keras.applications.vgg16 import VGG16
@@ -20,7 +21,6 @@ from keras.layers import Dense, Flatten, Dropout, AveragePooling2D
 from keras.models import Model, load_model
 from keras.optimizers import SGD
 from keras.callbacks import ModelCheckpoint, TensorBoard
-
 
 #%% initialize dataset
 if args.estimated_3DBB is None:
@@ -100,6 +100,7 @@ if args.eval is None:
     if args.resume is not None:
         initial_epoch = int(os.path.basename(args.resume).split("_")[1]) + 1
 
+    x, y = BoxCarsDataPreprocessing()
 
     model.fit(generator=generator_train, 
                         steps_per_epoch=generator_train.n,
