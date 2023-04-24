@@ -148,7 +148,7 @@ zipp                         3.15.0
 ```
 
 ### Instructions for setting up multiple CUDA environments in windows OS:
-To set different CUDA versions in Windows, you can follow the steps below:
+To install different CUDA versions in Windows, you can follow the steps below:
 
 1. Install the desired CUDA version(s) on your computer. You can download the CUDA Toolkit from the NVIDIA website.
 
@@ -173,3 +173,32 @@ To set different CUDA versions in Windows, you can follow the steps below:
 11. Close the Environment Variables dialog and open a new command prompt to test the CUDA version. You can test the installation by typing "nvcc -V" in the command prompt. The output should show the version of CUDA you set.
 
 Note: Make sure to use the correct version of CUDA for your specific application. Some applications may not work with certain versions of CUDA.
+
+### Configuring different CUDA versions
+To use different CUDA versions in the Windows terminal, you can follow the steps below:
+
+1. Open the Windows terminal (e.g., Command Prompt or PowerShell).
+
+2. To use a specific CUDA version, you need to set the `PATH` environment variable to include the path to the desired CUDA version's bin directory.
+
+3. You can set the `PATH` environment variable temporarily for the current terminal session by typing the following command, replacing "x.x" with the CUDA version you want to use:
+
+```
+set PATH=C:\Program Files\NVIDIA Corporation\CUDA-x.x\bin;%PATH%
+```
+
+For example, to use CUDA version 10.0, type:
+
+```
+set PATH=C:\Program Files\NVIDIA Corporation\CUDA-10.0\bin;%PATH%
+```
+
+4. You can then check the version of CUDA that is currently being used by typing the following command:
+
+```
+nvcc --version
+```
+
+This will display the version of the CUDA compiler that is being used in the current terminal session.
+
+Note that the `PATH` environment variable will only be set for the current terminal session. If you want to use a specific CUDA version in a different terminal session, you will need to repeat the above steps.
