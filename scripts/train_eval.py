@@ -8,11 +8,12 @@ args = parse_args(["ResNet50", "VGG16", "VGG19", "InceptionV3"])
 import os
 import time
 import sys
+import tensorflow as tf
 
-from lib.boxcars_dataset import BoxCarsDataset
-from lib.boxcars_data_generator import BoxCarsDataGenerator
+from boxcars_dataset import BoxCarsDataset
+from boxcars_data_generator import BoxCarsDataGenerator, BoxCarsDataPreprocessing
 
-# from keras.applications.resnet50 import ResNet50
+from tensorflow.keras.applications.resnet50 import ResNet50
 from keras.applications.vgg16 import VGG16
 from keras.applications.vgg19 import VGG19
 from keras.applications.inception_v3 import InceptionV3
@@ -20,7 +21,6 @@ from keras.layers import Dense, Flatten, Dropout, AveragePooling2D
 from keras.models import Model, load_model
 from keras.optimizers import SGD
 from keras.callbacks import ModelCheckpoint, TensorBoard
-
 
 #%% initialize dataset
 if args.estimated_3DBB is None:
@@ -100,17 +100,17 @@ if args.eval is None:
     if args.resume is not None:
         initial_epoch = int(os.path.basename(args.resume).split("_")[1]) + 1
 
-    iterator = iter(generator_train)
-    for element in iterator:
-        model.fit(  element[0], element[1],
-                    steps_per_epoch=generator_train.n,
-                    epochs=args.epochs,
-                    verbose=1,
-                    validation_data=generator_val,
-                    validation_steps=generator_val.n,
-                    callbacks=[tb_callback, saver_callback],
-                    initial_epoch = initial_epoch,
-                )
+    x, y = BoxCarsDataPreprocessing()
+
+    model.fit(generator=generator_train, 
+                        steps_per_epoch=generator_train.n,
+                        epochs=args.epochs,
+                        verbose=1,
+                        validation_data=generator_val,
+                        validation_steps=generator_val.n,
+                        callbacks=[tb_callback, saver_callback],
+                        initial_epoch = initial_epoch,
+                        )
 
     #%% save trained data
     print("Saving the final model to %s"%(args.output_final_model_path))

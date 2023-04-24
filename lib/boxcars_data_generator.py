@@ -20,9 +20,15 @@ class BoxCarsDataGenerator(Iterator):
             self.dataset.load_atlas()
 
     #%%
-    def next(self):
+    def get_next_sample(self):
         with self.lock:
             index_array, current_index, current_batch_size = next(self.index_generator)
+        return index_array, current_batch_size
+
+#%%
+class BoxCarsDataPreprocessing():
+    def get_next_sample(self):
+        index_array, current_batch_size = BoxCarsDataGenerator.get_next_sample()    
         x = np.empty([current_batch_size] + list(self.image_size) + [3], dtype=np.float32)
         for i, ind in enumerate(index_array):
             vehicle_id, instance_id = self.dataset.X[self.part][ind]
@@ -41,4 +47,3 @@ class BoxCarsDataGenerator(Iterator):
             return x
         y = self.dataset.Y[self.part][index_array]
         return x, y
-
