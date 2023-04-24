@@ -147,4 +147,29 @@ wrapt                        1.15.0
 zipp                         3.15.0
 ```
 
-* CUDA env variables: CUDA_PATH_V11_2 OR CUDA_PATH_V8_0
+### Instructions for setting up multiple CUDA environments in windows OS:
+To set different CUDA versions in Windows, you can follow the steps below:
+
+1. Install the desired CUDA version(s) on your computer. You can download the CUDA Toolkit from the NVIDIA website.
+
+2. Once the CUDA version is installed, navigate to the installation directory (by default, it's located in C:\Program Files\NVIDIA Corporation\CUDA-x.x, where "x.x" represents the version number).
+
+3. Inside the installation directory, create a new folder with a name that indicates the CUDA version you want to set. For example, if you want to set CUDA version 10.0, create a folder named "CUDA10.0".
+
+4. Copy the contents of the "bin", "lib", "include", and "nvvm" folders from the CUDA installation directory (e.g., C:\Program Files\NVIDIA Corporation\CUDA-10.0) to the new folder you created in step 3 (e.g., C:\Program Files\NVIDIA Corporation\CUDA10.0).
+
+5. Open the Windows Environment Variables dialog by searching for "Environment Variables" in the Windows search bar and selecting "Edit the system environment variables".
+
+6. In the Environment Variables dialog, click on the "New" button under the "System variables" section.
+
+7. In the "Variable name" field, enter "CUDA_PATH_x_x" (where "x_x" represents the version number you want to set, e.g., "CUDA_PATH_10_0" for CUDA version 10.0).
+
+8. In the "Variable value" field, enter the path to the folder you created in step 3 (e.g., "C:\Program Files\NVIDIA Corporation\CUDA10.0").
+
+9. Click "OK" to save the new environment variable.
+
+10. Repeat steps 6-9 for each CUDA version you want to set.
+
+11. Close the Environment Variables dialog and open a new command prompt to test the CUDA version. You can test the installation by typing "nvcc -V" in the command prompt. The output should show the version of CUDA you set.
+
+Note: Make sure to use the correct version of CUDA for your specific application. Some applications may not work with certain versions of CUDA.
