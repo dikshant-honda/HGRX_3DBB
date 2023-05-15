@@ -85,8 +85,8 @@ if args.eval is None:
     #%% initialize dataset for training
     dataset.initialize_data("train")
     dataset.initialize_data("validation")
-    generator_train = BoxCarsDataGenerator(dataset, "train", args.batch_size, training_mode=True)
-    generator_val = BoxCarsDataGenerator(dataset, "validation", args.batch_size, training_mode=False)
+    # generator_train = BoxCarsDataGenerator(dataset, "train", args.batch_size, training_mode=True)
+    # generator_val = BoxCarsDataGenerator(dataset, "validation", args.batch_size, training_mode=False)
 
 
     #%% callbacks
@@ -100,17 +100,8 @@ if args.eval is None:
     if args.resume is not None:
         initial_epoch = int(os.path.basename(args.resume).split("_")[1]) + 1
 
-    x, y = BoxCarsDataPreprocessing()
-
-    model.fit(generator=generator_train, 
-                        steps_per_epoch=generator_train.n,
-                        epochs=args.epochs,
-                        verbose=1,
-                        validation_data=generator_val,
-                        validation_steps=generator_val.n,
-                        callbacks=[tb_callback, saver_callback],
-                        initial_epoch = initial_epoch,
-                        )
+    # using model.fit instead of model.fit_generator
+    model.fit(dataset.X, dataset.Y, batch_size=args.batch_size, epochs=args.epochs)
 
     #%% save trained data
     print("Saving the final model to %s"%(args.output_final_model_path))
@@ -121,11 +112,12 @@ if args.eval is None:
 #%% evaluate the model 
 print("Running evaluation...")
 dataset.initialize_data("test")
-generator_test = BoxCarsDataGenerator(dataset, "test", args.batch_size, training_mode=False, generate_y=False)
+# generator_test = BoxCarsDataGenerator(dataset, "test", args.batch_size, training_mode=False, generate_y=False)
 start_time = time.time()
-predictions = model.predict_generator(generator_test, generator_test.n)
+# predictions = model.predict_generator(generator_test, generator_test.n)
+predictions = model.predict(dataset.X, batch_size = args.batch_size)
 end_time = time.time()
 single_acc, tracks_acc = dataset.evaluate(predictions)
 print(" -- Accuracy: %.2f%%"%(single_acc*100))
 print(" -- Track accuracy: %.2f%%"%(tracks_acc*100))
-print(" -- Image processing time: %.1fms"%((end_time-start_time)/generator_test.n*1000))
+# print(" -- Image processing time: %.1fms"%((end_time-start_time)/generator_test.n*1000))
