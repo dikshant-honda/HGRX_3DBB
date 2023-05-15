@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from config import BOXCARS_DATASET,BOXCARS_ATLAS,BOXCARS_CLASSIFICATION_SPLITS
-from utils import load_cache
+from scripts.config import BOXCARS_DATASET,BOXCARS_ATLAS,BOXCARS_CLASSIFICATION_SPLITS
+from lib.utils import load_cache
 import cv2
 import numpy as np
 

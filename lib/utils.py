@@ -3,6 +3,7 @@ import pickle
 import os
 import numpy as np
 import sys
+import argparse
 
 #%%
 def load_cache(path, encoding="latin-1", fix_imports=True):
@@ -30,7 +31,6 @@ def ensure_dir(d):
 
 #%%
 def parse_args(available_nets):
-    import argparse
     default_cache = os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "cache"))
     parser = argparse.ArgumentParser(description="BoxCars fine-grained recognition algorithm Keras re-implementation",
                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
