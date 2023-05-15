@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import _init_paths
 # this should be soon to prevent tensorflow initialization with -h parameter
-from lib.utils import ensure_dir, parse_args
+from utils import ensure_dir, parse_args
 args = parse_args(["ResNet50", "VGG16", "VGG19", "InceptionV3"])
 
 # other imports
