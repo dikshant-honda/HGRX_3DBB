@@ -13,6 +13,8 @@ import tensorflow as tf
 from boxcars_dataset import BoxCarsDataset
 from boxcars_data_generator import BoxCarsDataGenerator, BoxCarsDataPreprocessing
 
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
 from tensorflow.keras.applications.resnet50 import ResNet50
 from keras.applications.vgg16 import VGG16
 from keras.applications.vgg19 import VGG19
@@ -88,6 +90,29 @@ if args.eval is None:
     # generator_train = BoxCarsDataGenerator(dataset, "train", args.batch_size, training_mode=True)
     # generator_val = BoxCarsDataGenerator(dataset, "validation", args.batch_size, training_mode=False)
 
+    # init generators
+    generator = ImageDataGenerator(rescale=1./255,
+                               horizontal_flip=True,
+                               fill_mode='nearest',
+                               validation_split=0.2)
+    
+    def get_train_images():
+        train_images = generator.flow_from_directory(os.path.join(data_path, 'train'),
+                                                    target_size=(40, 24, 1),
+                                                    batch_size=32,
+                                                    color_mode='grayscale',
+                                                    class_mode='categorical',
+                                                    subset='training',
+                                                    shuffle=True)
+
+    def get_validation_images():
+        validation_images = generator.flow_from_directory(os.path.join(data_path, 'train'),
+                                                        target_size=(40, 24, 1),
+                                                        batch_size=32,
+                                                        color_mode='grayscale',
+                                                        class_mode='categorical',
+                                                        subset='validation',
+                                                        shuffle=True)
 
     #%% callbacks
     ensure_dir(args.tensorboard_dir)
@@ -101,7 +126,8 @@ if args.eval is None:
         initial_epoch = int(os.path.basename(args.resume).split("_")[1]) + 1
 
     # using model.fit instead of model.fit_generator
-    model.fit(dataset.X, dataset.Y, batch_size=args.batch_size, epochs=args.epochs)
+    # model.fit(dataset.X, dataset.Y, batch_size=args.batch_size, epochs=args.epochs)
+    model.fit(get_train_images, validation_data = get_validation_images, batch_size=args.batch_size, epochs=args.epochs)
 
     #%% save trained data
     print("Saving the final model to %s"%(args.output_final_model_path))
