@@ -2,6 +2,7 @@
 import _init_paths
 # this should be soon to prevent tensorflow initialization with -h parameter
 from utils import ensure_dir, parse_args
+from config import BOXCARS_IMAGES_ROOT
 args = parse_args(["ResNet50", "VGG16", "VGG19", "InceptionV3"])
 
 # other imports
@@ -85,8 +86,8 @@ args.tensorboard_dir = os.path.join(args.cache, model.name, "tensorboard")
 if args.eval is None:
     print("Training...")
     #%% initialize dataset for training
-    dataset.initialize_data("train")
-    dataset.initialize_data("validation")
+    train_data = dataset.initialize_data("train")
+    validation_data = dataset.initialize_data("validation")
     # generator_train = BoxCarsDataGenerator(dataset, "train", args.batch_size, training_mode=True)
     # generator_val = BoxCarsDataGenerator(dataset, "validation", args.batch_size, training_mode=False)
 
@@ -97,18 +98,18 @@ if args.eval is None:
                                validation_split=0.2)
     
     def get_train_images():
-        train_images = generator.flow_from_directory(os.path.join(data_path, 'train'),
-                                                    target_size=(40, 24, 1),
-                                                    batch_size=32,
+        train_images = generator.flow_from_directory(BOXCARS_IMAGES_ROOT,
+                                                    target_size=(224, 224),
+                                                    batch_size=args.batch_size,
                                                     color_mode='grayscale',
                                                     class_mode='categorical',
                                                     subset='training',
                                                     shuffle=True)
 
     def get_validation_images():
-        validation_images = generator.flow_from_directory(os.path.join(data_path, 'train'),
-                                                        target_size=(40, 24, 1),
-                                                        batch_size=32,
+        validation_images = generator.flow_from_directory(BOXCARS_IMAGES_ROOT,
+                                                        target_size=(224, 224),
+                                                        batch_size=args.batch_size,
                                                         color_mode='grayscale',
                                                         class_mode='categorical',
                                                         subset='validation',
@@ -127,7 +128,7 @@ if args.eval is None:
 
     # using model.fit instead of model.fit_generator
     # model.fit(dataset.X, dataset.Y, batch_size=args.batch_size, epochs=args.epochs)
-    model.fit(get_train_images, validation_data = get_validation_images, batch_size=args.batch_size, epochs=args.epochs)
+    model.fit(get_train_images(), validation_data = get_validation_images(), batch_size=args.batch_size, epochs=args.epochs)
 
     #%% save trained data
     print("Saving the final model to %s"%(args.output_final_model_path))
